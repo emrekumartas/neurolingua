@@ -1,14 +1,23 @@
+
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage, router } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import LingosphereLogo from "../Components/LingosphereLogo.vue";
 import TranslationAnimation from "../Components/TranslationAnimation.vue";
 
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+
+const logout = () => {
+    router.post('/logout');
+};
 </script>
 
 <template>
     <v-app>
         <div class="landing-page">
-            <!-- Navigation -->
+
             <v-app-bar
                 flat
                 color="black"
@@ -19,15 +28,24 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                 fixed
             >
                 <LingosphereLogo size="md" />
+
                 <v-spacer />
-                <div class="d-flex align-center gap-6">
-                    <v-btn variant="text" class="text-white text-body-1">Features</v-btn>
-                    <v-btn variant="text" class="text-white text-body-1">Pricing</v-btn>
-                    <v-btn variant="text" class="text-white text-body-1">Documentation</v-btn>
+
+
+                <template v-if="user">
+                    <span class="text-white mr-4">{{ user.email }}</span>
+                    <v-btn variant="text" class="text-white text-body-1" @click="logout">
+                        Logout
+                    </v-btn>
+                </template>
+
+
+                <template v-else>
                     <Link href="/login" class="text-decoration-none">
                         <v-btn variant="text" class="text-white text-body-1">Sign in</v-btn>
                     </Link>
-                    <Link href="/login" class="text-decoration-none">
+
+                    <Link href="/register" class="text-decoration-none">
                         <v-btn
                             color="orange"
                             class="text-white font-weight-medium"
@@ -38,7 +56,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                             Get Started
                         </v-btn>
                     </Link>
-                </div>
+                </template>
             </v-app-bar>
 
             <v-main class="bg-black">
@@ -63,6 +81,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                                 <p class="text-grey-lighten-1 text-h6 mb-8 hero-subtitle">
                                     Transform your content with neural machine translation. Built for developers who demand precision, speed, and scalability.
                                 </p>
+
                                 <div class="d-flex align-center gap-4 mb-8">
                                     <Link href="/login" class="text-decoration-none">
                                         <v-btn
@@ -86,6 +105,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                                         View Demo
                                     </v-btn>
                                 </div>
+
                                 <div class="d-flex align-center gap-4">
                                     <div class="text-grey-lighten-2">
                                         <div class="text-body-1 font-weight-medium">5,000+</div>
@@ -109,7 +129,6 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                         </v-col>
                     </v-row>
                 </v-container>
-
                 <!-- Features Grid -->
                 <v-container class="py-16 features-section">
                     <v-row>
@@ -129,7 +148,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                                 flat
                                 rounded="lg"
                                 class="pa-8 feature-card h-100"
-                                elevation="0"
+                                elevation="2"
                             >
                                 <div class="feature-icon mb-6">
                                     <v-icon size="32" color="orange">mdi-brain</v-icon>
@@ -148,7 +167,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                                 flat
                                 rounded="lg"
                                 class="pa-8 feature-card h-100"
-                                elevation="0"
+                                elevation="2"
                             >
                                 <div class="feature-icon mb-6">
                                     <v-icon size="32" color="orange">mdi-api</v-icon>
@@ -167,7 +186,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                                 flat
                                 rounded="lg"
                                 class="pa-8 feature-card h-100"
-                                elevation="0"
+                                elevation="2"
                             >
                                 <div class="feature-icon mb-6">
                                     <v-icon size="32" color="orange">mdi-rocket-launch</v-icon>
@@ -182,6 +201,7 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
                         </v-col>
                     </v-row>
                 </v-container>
+
 
                 <!-- CTA Section -->
                 <v-container class="py-16 cta-section">
@@ -226,38 +246,20 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
 </template>
 
 <style scoped>
-.landing-page {
+.features-section {
     background-color: #000000;
-    min-height: 100vh;
-}
-
-.hero-section {
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-title {
-    line-height: 1.2;
-    background: linear-gradient(to right, #fff, #ffa726);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.hero-subtitle {
-    max-width: 600px;
-    line-height: 1.6;
+    color: #fff;
 }
 
 .feature-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(128, 128, 128, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -271,21 +273,9 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
     justify-content: center;
 }
 
-.gap-4 {
-    gap: 1rem;
-}
-
-.gap-6 {
-    gap: 1.5rem;
-}
-
-:deep(.v-btn) {
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-:deep(.v-app-bar) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-}
 </style>
+
+
+
+
+

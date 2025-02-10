@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import LingosphereLogo from "../../Components/LingosphereLogo.vue";
 
 const showPassword = ref(false);
-const form = ref({
+
+const form = useForm({
     name: '',
     email: '',
     password: '',
@@ -12,8 +13,9 @@ const form = ref({
 });
 
 const submit = () => {
-    // Handle registration
-    console.log('Registration submitted:', form.value);
+    form.post("/register", {
+        onFinish: () => console.log("Registration completed"),
+    });
 };
 </script>
 
@@ -41,7 +43,9 @@ const submit = () => {
                             </Link>
 
                             <h2 class="text-h4 font-weight-bold text-white mb-2">Create your account</h2>
-                            <p class="text-medium-emphasis text-white">Join NeuroLingua and start localizing your software globally</p>
+                            <p class="text-medium-emphasis text-white">
+                                Join NeuroLingua and start localizing your software globally
+                            </p>
 
                             <v-form @submit.prevent="submit" class="mt-8">
                                 <v-text-field
@@ -54,6 +58,7 @@ const submit = () => {
                                     placeholder="John Doe"
                                     required
                                     class="mb-4"
+                                    :error-messages="form.errors.name"
                                 ></v-text-field>
 
                                 <v-text-field
@@ -66,6 +71,7 @@ const submit = () => {
                                     placeholder="john@example.com"
                                     required
                                     class="mb-4"
+                                    :error-messages="form.errors.email"
                                 ></v-text-field>
 
                                 <v-text-field
@@ -77,9 +83,10 @@ const submit = () => {
                                     bg-color="rgba(255, 255, 255, 0.1)"
                                     placeholder="••••••••"
                                     required
+                                    class="mb-4"
+                                    :error-messages="form.errors.password"
                                     :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                     @click:append-inner="showPassword = !showPassword"
-                                    class="mb-4"
                                 ></v-text-field>
 
                                 <v-text-field
@@ -92,6 +99,7 @@ const submit = () => {
                                     placeholder="••••••••"
                                     required
                                     class="mb-6"
+                                    :error-messages="form.errors.password_confirmation"
                                 ></v-text-field>
 
                                 <v-btn
@@ -102,12 +110,13 @@ const submit = () => {
                                     block
                                     class="mb-8 text-black font-weight-medium"
                                     elevation="2"
+                                    :loading="form.processing"
                                 >
                                     Create Account
                                 </v-btn>
 
                                 <div class="text-center d-flex align-center justify-center gap-2">
-                                    <span class="text-medium-emphasis">Already have an account?</span>
+                                    <span class="text-orange">Already have an account?</span>
                                     <Link href="/login" class="text-decoration-none">
                                         <v-btn
                                             variant="text"
@@ -158,5 +167,3 @@ const submit = () => {
         </v-container>
     </v-app>
 </template>
-
-

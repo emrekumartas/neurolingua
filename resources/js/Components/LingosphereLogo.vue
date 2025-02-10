@@ -6,6 +6,7 @@ defineProps<{
 </script>
 
 <template>
+
     <div
         class="inline-flex items-center"
         :class="{
@@ -106,24 +107,4 @@ defineProps<{
     </div>
 </template>
 
-<style scoped>
-@keyframes pulse {
-    0% {
-        transform: scale(0.95);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.3;
-    }
-    100% {
-        transform: scale(0.95);
-        opacity: 0.5;
-    }
-}
 
-.pulse-circle {
-    transform-origin: center;
-    animation: pulse 3s ease-in-out infinite;
-}
-</style>

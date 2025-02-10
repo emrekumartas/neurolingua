@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import LingosphereLogo from "../../Components/LingosphereLogo.vue";
 
 const showPassword = ref(false);
-const form = ref({
-    email: '',
-    password: '',
-    remember: false
+
+const form = useForm({
+    email: "",
+    password: "",
+    remember: false,
 });
 
 const submit = () => {
-    // Handle login
-    console.log('Login submitted:', form.value);
+    form.post("/login", {
+        onFinish: () => console.log("Login successful"),
+    });
 };
 </script>
 
@@ -46,6 +48,7 @@ const submit = () => {
                                 <v-text-field
                                     v-model="form.email"
                                     label="Email address"
+                                    :error-messages="form.errors.email"
                                     type="email"
                                     variant="outlined"
                                     color="orange"
@@ -64,6 +67,7 @@ const submit = () => {
                                     bg-color="rgba(255, 255, 255, 0.1)"
                                     placeholder="••••••••"
                                     required
+                                    :error-messages="form.errors.password"
                                     :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                     @click:append-inner="showPassword = !showPassword"
                                     class="mb-4"
@@ -84,12 +88,13 @@ const submit = () => {
                                     block
                                     class="mb-8 text-black font-weight-medium"
                                     elevation="2"
+                                    :loading="form.processing"
                                 >
                                     Sign in
                                 </v-btn>
 
                                 <div class="text-center d-flex align-center justify-center gap-2">
-                                    <span class="text-medium-emphasis">Don't have an account?</span>
+                                    <span class="text-orange">Don't have an account?</span>
                                     <Link href="/register" class="text-decoration-none">
                                         <v-btn
                                             variant="outlined"
@@ -143,5 +148,3 @@ const submit = () => {
         </v-container>
     </v-app>
 </template>
-
-

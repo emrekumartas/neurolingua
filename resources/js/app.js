@@ -6,6 +6,8 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js';
 import vuetify from './plugins/vuetify';
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/lib/styles/main.css';
 
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
