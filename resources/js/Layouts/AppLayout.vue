@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { Link, usePage, router } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import { ref } from 'vue';
 import LingosphereLogo from "../Components/LingosphereLogo.vue";
 import TranslationAnimation from "../Components/TranslationAnimation.vue";
 
@@ -9,8 +10,17 @@ import TranslationAnimation from "../Components/TranslationAnimation.vue";
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
+
+
+
 const logout = () => {
+
     router.post('/logout');
+    snackbarMessage.value = 'You have been logged out';
+    snackbar.value = true;
 };
 </script>
 
@@ -32,6 +42,7 @@ const logout = () => {
                 <v-spacer />
 
 
+
                 <template v-if="user">
                     <span class="text-white mr-4">{{ user.email }}</span>
                     <v-btn variant="text" class="text-white text-body-1" @click="logout">
@@ -41,6 +52,13 @@ const logout = () => {
 
 
                 <template v-else>
+
+                    <Link href="/" class="text-decoration-none">
+                        <v-btn variant="text" class="text-white text-body-1">Pricing</v-btn>
+                    </Link>
+                    <Link href="/" class="text-decoration-none">
+                        <v-btn variant="text" class="text-white text-body-1">Docs</v-btn>
+                    </Link>
                     <Link href="/login" class="text-decoration-none">
                         <v-btn variant="text" class="text-white text-body-1">Sign in</v-btn>
                     </Link>
@@ -129,6 +147,8 @@ const logout = () => {
                         </v-col>
                     </v-row>
                 </v-container>
+
+
                 <!-- Features Grid -->
                 <v-container class="py-16 features-section">
                     <v-row>
@@ -243,7 +263,20 @@ const logout = () => {
             </v-main>
         </div>
     </v-app>
+    <v-snackbar
+        v-model="snackbar"
+        :timeout="3000"
+        color="gray"
+        top
+        right
+    >
+        {{ snackbarMessage }}
+        <template v-slot:actions>
+            <v-btn color="blue" @click="snackbar = false">OK</v-btn>
+        </template>
+    </v-snackbar>
 </template>
+
 
 <style scoped>
 .features-section {
