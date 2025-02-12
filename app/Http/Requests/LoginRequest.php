@@ -33,6 +33,7 @@ class LoginRequest extends FormRequest
             'email.required' => 'This field is required',
             'email.email' => 'This field must be an email',
             'password.required' => 'This field is required',
+            'password.min' => 'Password must be at least 8 characters',
         ];
     }
 }

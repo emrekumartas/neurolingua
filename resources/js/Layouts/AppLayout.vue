@@ -44,10 +44,38 @@ const logout = () => {
 
 
                 <template v-if="user">
-                    <span class="text-white mr-4">{{ user.email }}</span>
-                    <v-btn variant="text" class="text-white text-body-1" @click="logout">
-                        Logout
-                    </v-btn>
+
+
+                    <Link href="/" class="text-decoration-none">
+                        <v-btn variant="text" class="text-white text-body-1">Docs</v-btn>
+                    </Link>
+                    <Link href="/" class="text-decoration-none">
+                        <v-btn variant="text" class="text-white text-body-1">Pricing</v-btn>
+                    </Link>
+
+
+                    <v-menu offset-y>
+                        <template v-slot:activator="{ props }">
+                            <v-avatar color="orange" v-bind="props">
+                                <v-icon icon="mdi-account-circle" size="32"></v-icon>
+                            </v-avatar>
+                        </template>
+
+                        <v-card width="200">
+                            <v-card-text class="text-center">
+                                <h4 class="text-h6 font-weight-bold">{{ user.name }}</h4>
+                                <p class="text-caption text-grey-darken-1">{{ user.email }}</p>
+                            </v-card-text>
+
+                            <v-divider></v-divider>
+
+                            <v-card-actions>
+                                <v-btn block color="red" variant="text" @click="logout">
+                                    Logout
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu>
                 </template>
 
 
@@ -266,9 +294,9 @@ const logout = () => {
     <v-snackbar
         v-model="snackbar"
         :timeout="3000"
-        color="gray"
+        color="white"
         top
-        right
+
     >
         {{ snackbarMessage }}
         <template v-slot:actions>

@@ -34,9 +34,12 @@ class AuthController extends Controller
             return Inertia::location('/');
         }
 
-        return response()->json([
-            'message' => 'The provided credentials do not match our records.',
-        ], 401);
+      if('email' == $credentials['email']){
+        return redirect()->back()->withErrors(['email' => 'The provided credentials are incorrect.']);
+      }
+      else{
+        return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
+      }
     }
 
 
